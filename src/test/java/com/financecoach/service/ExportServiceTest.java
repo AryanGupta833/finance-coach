@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.YearMonth;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.financecoach.model.Transaction;
+import com.financecoach.model.MonthlyReport;
 
 public class ExportServiceTest {
 
@@ -77,5 +79,37 @@ public class ExportServiceTest {
                 + ",Needs,Rent,5000.0",
             lines.get(2)
         );
+    }
+
+    @Test
+    void rendersAndExportsMonthlyTextReport() throws Exception {
+        Path reportPath = Path.of("exports/monthly_report_2026-10.txt");
+        Files.deleteIfExists(reportPath);
+        MonthlyReport report = new MonthlyReport(
+            YearMonth.of(2026, 10),
+            1000,
+            500,
+            250,
+            100,
+            100,
+            50,
+            50.0,
+            25.0,
+            20.0
+        );
+        ExportService exporter = new ExportService();
+
+        String rendered = exporter.renderMonthlyReport(report);
+        Path exportedPath = exporter.exportMonthlyReport(report);
+
+        assertEquals(reportPath, exportedPath);
+        assertTrue(Files.exists(reportPath));
+        assertTrue(rendered.contains("Monthly Financial Report - 2026-10"));
+        assertTrue(rendered.contains("Total Income: $1000.00"));
+        assertTrue(rendered.contains("Total Savings: $100.00"));
+        assertTrue(rendered.contains("Savings + Debt (target 20%): 20.0%"));
+        assertEquals(rendered, Files.readString(reportPath));
+
+        Files.deleteIfExists(reportPath);
     }
 }
