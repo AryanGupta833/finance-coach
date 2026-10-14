@@ -1,61 +1,54 @@
 # AI-Powered Personal Finance Coach
 
-A lightweight, terminal-based Java application designed to help users manage their personal finances using the **50/30/20 budgeting rule**. The application provides smart financial tracking, automated categorization, and real-time AI-style coaching.
+[![Java](https://img.shields.io/badge/Java-17+-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/)
+[![Maven](https://img.shields.io/badge/Maven-3.6+-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)](https://maven.apache.org/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen?style=for-the-badge)](CONTRIBUTING.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-blue?style=for-the-badge)](http://makeapullrequest.com)
+
+A lightweight, terminal-based Java application that helps users manage their personal finances using the **50/30/20 budgeting rule**.  
+It offers smart transaction tracking, real-time financial analysis, and AI-style coaching — all in a clean, easy-to-use terminal interface.
 
 ---
 
 ## Features
 
-- Categorized tracking of Income, Needs, Wants, and Savings
-- Real-time financial analysis and coaching based on the 50/30/20 rule
-- Persistent storage of all transactions using CSV
-- Clean, interactive terminal interface
-- Built with professional project structure using Maven
+- Categorized tracking of **Income**, **Needs**, **Wants**, and **Savings**
+- Real-time financial coaching based on the 50/30/20 rule
+- Automatic data persistence using CSV
+- Interactive and beginner-friendly terminal menu
+- Clean Maven project structure ready for collaboration
+- Open for contributions and new features
 
 ---
 
 ## Tech Stack
 
-- **Language**: Java 17+
-- **Build Tool**: Apache Maven
-- **Storage**: Flat-file CSV
-- **Environment**: Linux / macOS / Windows (Terminal)
+| Technology       | Purpose                          |
+|------------------|----------------------------------|
+| Java 17+         | Core language                    |
+| Apache Maven     | Build & dependency management    |
+| CSV              | Lightweight data persistence     |
+| Terminal UI      | Simple interactive interface     |
 
----
-
-## 📁 Project Structure
-```text
-finance-coach/
-├── src/main/java/com/financecoach/
-│   ├── Main.java
-│   ├── engine/
-│   │   └── FinanceEngine.java
-│   ├── model/
-│   │   └── Transaction.java
-│   ├── repository/
-│   │   └── TransactionRepository.java
-│   └── utils/
-│       └── InputUtils.java
-├── src/main/resources/
-│   └── finance_data.csv
-├── pom.xml
-├── README.md
-└── CONTRIBUTING.md
-```
 ---
 
 ## Installation & Setup
 
 ### Prerequisites
 
-Ensure you have **OpenJDK 17** (or higher) and **Maven** installed.
+- OpenJDK 17 or higher  
+- Apache Maven 3.6+
 
-On Ubuntu/Debian:
 ```bash
+# Ubuntu / Debian
 sudo apt update
-sudo apt install openjdk-17-jdk 
+sudo apt install openjdk-17-jdk maven
+```
 
-# Clone and Run
+### Clone & Run
+
+```bash
 git clone https://github.com/bundlab/finance-coach.git
 cd finance-coach
 
@@ -65,27 +58,63 @@ mvn clean compile
 # Run the application
 mvn exec:java
 ```
+
+> Replace `bundlab` with the actual repository owner.
+
+---
+
+## How to Use
+
+1. Launch the app with `mvn exec:java`
+2. Use the interactive menu to:
+   - Add income and expenses
+   - View budget breakdown
+   - Receive AI-powered financial insights
+3. All data is automatically saved to `finance_data.csv`
+
+---
+
+## Project Structure
+
+```plaintext
+finance-coach-java/
+├── src/main/java/com/financecoach/
+│   ├── Main.java                 # Application entry point
+│   ├── engine/                   # Business logic & analysis
+│   └── model/                    # Data models
+├── src/main/resources/
+│   └── finance_data.csv          # Persistent storage
+├── pom.xml
+├── README.md
+└── CONTRIBUTING.md
+```
+
+---
+
+## Contributing
+
+We welcome contributions from the community!  
+
+Whether you want to fix a bug, improve the coaching logic, add new features, or improve documentation — your help is appreciated.
+
+Please read our [Contributing Guide](CONTRIBUTING.md) before submitting a pull request.
+
+---
+
+## Contributors
+
+Thanks to everyone who has contributed to this project!
+
+<a href="https://github.com/bundlab/finance-coach/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=bundlab/finance-coach" alt="Contributors" />
+</a>
+
+---
+
 ## License
 
-This project is licensed under the MIT License.
-
-See the LICENSE file for details.
+This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-## Author
-bundlab
-
-
----
-
-## ⭐ Support
-
-If you find this project useful:
-
-* Star the repository
-* Fork the project
-* Report issues
-* Submit improvements
-
-Your support helps improve the project and future AI Powered development efforts.
+**Built with care to help people develop better financial habits.**
