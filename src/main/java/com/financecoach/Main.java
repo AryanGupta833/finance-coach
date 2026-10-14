@@ -1,8 +1,11 @@
 package com.financecoach;
 
 import java.util.Scanner;
+import java.time.YearMonth;
+import java.time.format.DateTimeParseException;
 
 import com.financecoach.engine.FinanceEngine;
+import com.financecoach.model.MonthlyReport;
 import com.financecoach.repository.TransactionRepository;
 import com.financecoach.service.ExportService;
 import com.financecoach.utils.InputUtils;
@@ -36,16 +39,16 @@ public class Main {
                     "2. Add Expense (Needs, Wants, Debt, Savings)"
                 );
                 System.out.println("3. Get AI Coaching Report");
-                System.out.println("4. Export Monthly Summary");
-                System.out.println("5. Exit");
+                System.out.println("4. View/Export Monthly Text Report");
+                System.out.println("5. Export Transactions CSV");
+                System.out.println("6. Exit");
 
                 int choice = input.askInt(
                     "Choose an option: ",
-                    "Please enter a number (1-5)."
+                    "Please enter a number (1-6)."
                 );
 
-                // ONLY option 5 should exit
-                if (choice == 5) {
+                if (choice == 6) {
                     break;
                 }
 
@@ -110,6 +113,30 @@ public class Main {
                     }
 
                     case 4 -> {
+                        YearMonth month = askReportMonth(input);
+                        MonthlyReport report = coach.generateMonthlyReport(month);
+                        String reportText = exporter.renderMonthlyReport(report);
+                        System.out.print(reportText);
+
+                        String saveReport = input.askString(
+                            "Save this report as a text file? (y/n): "
+                        );
+                        if (saveReport.equalsIgnoreCase("y")) {
+                            try {
+                                System.out.println(
+                                    "Report saved to "
+                                        + exporter.exportMonthlyReport(report)
+                                );
+                            } catch (java.io.IOException e) {
+                                System.err.println(
+                                    "Coach: Error saving report: "
+                                        + e.getMessage()
+                                );
+                            }
+                        }
+                    }
+
+                    case 5 -> {
 
                         exporter.exportMonthlySummary(
                             coach.getTransactions()
@@ -128,6 +155,20 @@ public class Main {
             System.out.println(
                 "Stay financially healthy! Goodbye."
             );
+        }
+    }
+
+    private static YearMonth askReportMonth(InputUtils input) {
+        while (true) {
+            String value = input.askString("Report month (YYYY-MM): ");
+            try {
+                YearMonth month = YearMonth.parse(value);
+                if (month.toString().equals(value)) {
+                    return month;
+                }
+            } catch (DateTimeParseException ignored) {
+            }
+            System.out.println("Enter a valid month in YYYY-MM format.");
         }
     }
 }

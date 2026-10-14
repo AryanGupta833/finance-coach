@@ -2,7 +2,9 @@ package com.financecoach.engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.YearMonth;
 
+import com.financecoach.model.MonthlyReport;
 import com.financecoach.model.Transaction;
 import com.financecoach.repository.TransactionRepository;
 
@@ -95,6 +97,64 @@ public class FinanceEngine {
                 + "perfectly. You're a financial pro!"
             );
         }
+    }
+
+    public MonthlyReport generateMonthlyReport(YearMonth month) {
+        List<Transaction> monthlyTransactions = transactions.stream()
+            .filter(transaction -> transaction.getDate() != null)
+            .filter(transaction -> YearMonth.from(transaction.getDate()).equals(month))
+            .toList();
+
+        double income = sumByCategory(monthlyTransactions, "Income");
+        double needs = sumByCategory(monthlyTransactions, "Needs");
+        double wants = sumByCategory(monthlyTransactions, "Wants");
+        double savings = sumByCategory(monthlyTransactions, "Savings");
+        double debt = sumByCategory(monthlyTransactions, "Debt");
+        double other = monthlyTransactions.stream()
+            .filter(transaction -> !isStandardCategory(transaction.getCategory()))
+            .mapToDouble(Transaction::getAmount)
+            .sum();
+
+        if (income <= 0) {
+            return new MonthlyReport(
+                month, income, needs, wants, savings, debt, other,
+                null, null, null
+            );
+        }
+
+        return new MonthlyReport(
+            month,
+            income,
+            needs,
+            wants,
+            savings,
+            debt,
+            other,
+            needs / income * 100,
+            wants / income * 100,
+            (savings + debt) / income * 100
+        );
+    }
+
+    private double sumByCategory(
+        List<Transaction> source,
+        String category
+    ) {
+        return source.stream()
+            .filter(transaction -> transaction.getCategory() != null)
+            .filter(transaction -> transaction.getCategory().equalsIgnoreCase(category))
+            .mapToDouble(Transaction::getAmount)
+            .sum();
+    }
+
+    private boolean isStandardCategory(String category) {
+        return category != null && (
+            category.equalsIgnoreCase("Income")
+                || category.equalsIgnoreCase("Needs")
+                || category.equalsIgnoreCase("Wants")
+                || category.equalsIgnoreCase("Savings")
+                || category.equalsIgnoreCase("Debt")
+        );
     }
 
     private double sumByCategory(String category) {

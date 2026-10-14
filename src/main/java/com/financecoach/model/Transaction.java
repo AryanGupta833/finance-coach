@@ -9,7 +9,16 @@ public class Transaction {
     private final String description;
 
     public Transaction(String category, double amount, String description) {
-        this.date = LocalDate.now();
+        this(category, amount, description, LocalDate.now());
+    }
+
+    public Transaction(
+        String category,
+        double amount,
+        String description,
+        LocalDate date
+    ) {
+        this.date = date;
         this.category = category;
         this.amount = amount;
         this.description = description;
